@@ -57,10 +57,12 @@ const { onTick } = (function() {
   const startTimer = (
     time = Number(localStorage.getItem("gameTime"))
   ) => {
+    const gameTime = time += DAY;
+    render(timer, gameTime);
     GAME_INTERVAL = setInterval(() => {
       const gameTime = time += DAY;
-      onTick.next({ gameTime });
       render(timer, gameTime);
+      onTick.next({ gameTime });
       localStorage.setItem("gameTime", gameTime);
     }, DAY);
   }
@@ -76,7 +78,7 @@ const { onTick } = (function() {
       getCurrentYearMonth(time),
       getCurrentYear(time)
     ];
-    return `D: ${ day } - W: ${ week } - M: ${ month } - Y: ${ year }`;
+    return `D: ${ day } - W: ${ week } - M: ${ month } - Y: ${ 1985 + year }`;
   }
 
   startTimer();

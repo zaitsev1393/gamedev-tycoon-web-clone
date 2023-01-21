@@ -13,13 +13,14 @@ const rand = (multi) => Math.ceil(Math.random() * multi);
 
 const createScore = (initialValue) => {
   let scoreContainer = document.createElement("div");
-  scoreContainer.style['font-size'] = '20px';
+  scoreContainer.style['font-size'] = '18px';
+  scoreContainer.style.margin = "10px";
   const title = document.createElement("span");
   title.innerHTML = "Score: ";
   const score = document.createElement("span");
   score.innerHTML = initialValue
   scoreContainer.append(title, score);
-  document.body.appendChild(scoreContainer)
+  document.getElementById("frame").appendChild(scoreContainer)
   return {
     add: (value) => 
       setTimeout(() => 

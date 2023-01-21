@@ -1,13 +1,43 @@
 body {
-  background: rgb(29, 19, 81);
+  /* background: rgb(29, 19, 81); */
+  background-color: black;
   color: snow;
 }
-/* .round {
+
+.player {
   width: 100px;
-  height: 100px;
-  background-color: red;
-  border-radius: var(--radius);
-} */
+  height: 60px;
+  background: indigo;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,.3);
+  cursor: pointer;
+}
+
+.translate-center {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bordered-container {
+  border: 1px solid black;
+  border-radius: 3px;
+  color: black;
+  padding: 5px;
+  min-width: 100px;
+}
+
+#frame {
+  position: relative;
+  background: snow;
+  color: black;
+  left: 25vw;
+  top: 100px;
+  width: 50vw;
+  height: 400px;
+  border: 2px solid white;
+  border-radius: 10px;
+}
 
 .bubble {
   position: absolute;
@@ -24,10 +54,23 @@ body {
   font-weight: bold;
 }
 
+.scaling-appearing {
+  animation: scalingAppearing;
+  animation-timing-function: ease-in;
+  animation-duration: 0.1s;
+  animation-fill-mode: forwards;
+  transform: scale(0);
+}
+
 .popping {
   animation-name: popping;
   animation-duration: 1s;
   animation-timing-function: ease-in-out;
+}
+
+@keyframes scalingAppearing {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
 }
 
 @keyframes popping {
