@@ -1,0 +1,38 @@
+body {
+  background: rgb(29, 19, 81);
+  color: snow;
+}
+/* .round {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+  border-radius: var(--radius);
+} */
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  color: white;
+  box-shadow: 0 0 2px rgba(0,0,0,.2);
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.popping {
+  animation-name: popping;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes popping {
+  0% { top: 100px; }
+  50% { top: var(--animheight); }
+  70% { top: calc(var(--animheight) + calc(var(--animheight)) / 10); }
+  100% { top: var(--animheight); }
+}
