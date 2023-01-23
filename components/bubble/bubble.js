@@ -1,9 +1,17 @@
+import { entriesIntoStyles, frame, runAsync } from "../../helpers/helpers.js";
+
 // Contstants
 const BUBBLE_POPPING_TIME = 1000;
 const TRANSITION_TIME = 300;
 const COLORS = {
   TECHNICAL: "#0094C6",
   DESIGN: "#F15946"
+}
+
+
+const BUBBLES_ACCUMULATOR = {
+  top: frame().getBoundingClientRect().top + 10 + "px",
+  left: frame().getBoundingClientRect().left + (frame().getBoundingClientRect().width / 2)  + "px"
 }
 
 // Helpers
@@ -34,13 +42,10 @@ export const generateBubbles = () => {
   testBubbles(bubblesNumber)
 }
 
-const createBubble = (value = 1, color = COLORS.TECHNICAL, ) => {
+const createBubble = (value = 1, styles) => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble");
-  bubble.style = `
-    --animheight: 75px; 
-    background: ${ color };
-  `;
+  entriesIntoStyles(bubble, styles);
   bubble.innerHTML = value;
   document.body.append(bubble);
   return bubble;
@@ -48,25 +53,24 @@ const createBubble = (value = 1, color = COLORS.TECHNICAL, ) => {
 
 const popBubble = ({ 
   value,
-  coords
+  originNode
 }) => {
-  const bubble = createBubble(value);
-  const { x, y } = coords;
-  bubble.style.top = y + 'px';
-  bubble.style.left = x + 'px';
+  const { top, left } = originNode.getBoundingClientRect();
+  const styles = { background: COLORS.TECHNICAL, top: top + "px", left: left + "px" };
+  const bubble = createBubble(value, styles);
   bubble.classList.add("popping");
-  bubble.style.top = '75px';
   setTimeout(() => {
     moveBubble(bubble);
   }, BUBBLE_POPPING_TIME + 50);
 }
 
-const moveBubble = (bubble, coords = { x: window.innerWidth / 2, y: 150 }) => {
-  bubble.classList.remove('popping');
-  const { x: left, y: top } = coords;
-  bubble.style.top = top + "px";
-  bubble.style.left = left + "px";
-}
+const moveBubble = (
+  bubble, 
+  coords = BUBBLES_ACCUMULATOR
+) => {
+    bubble.classList.remove('popping');
+    entriesIntoStyles(bubble, coords);
+  }
 
 const score = createScore(0);
 
@@ -87,3 +91,16 @@ const testBubbles = (number) => {
     --number;
   }
 }
+
+const testPlayerBubbles = (number) => {
+  const player = document.getElementsByClassName("player")[0] || {};
+  console.log("player: ", player);
+  while(number > 0) {
+    const value = rand(5);
+    setTimeout(() => popBubble({ value, originNode: player }), rand(2000));
+    number--;
+  }
+}
+
+
+runAsync(() => testPlayerBubbles(5));

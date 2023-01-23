@@ -1,16 +1,10 @@
+@import "./components/bubble/bubble.css";
+@import "./components/player/player.css";
+
 body {
   /* background: rgb(29, 19, 81); */
   background-color: black;
   color: snow;
-}
-
-.player {
-  width: 100px;
-  height: 60px;
-  background: indigo;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,.3);
-  cursor: pointer;
 }
 
 .translate-center {
@@ -39,25 +33,10 @@ body {
   border-radius: 10px;
 }
 
-.bubble {
-  position: absolute;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  color: white;
-  box-shadow: 0 0 2px rgba(0,0,0,.2);
-  transition: 0.3s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-  font-weight: bold;
-}
-
 .scaling-appearing {
   animation: scalingAppearing;
   animation-timing-function: ease-in;
-  animation-duration: 0.1s;
+  animation-duration: 0.05s;
   animation-fill-mode: forwards;
   transform: scale(0);
 }
@@ -73,9 +52,9 @@ body {
   100% { transform: scale(1); }
 }
 
-@keyframes popping {
-  0% { top: 100px; }
-  50% { top: var(--animheight); }
-  70% { top: calc(var(--animheight) + calc(var(--animheight)) / 10); }
-  100% { top: var(--animheight); }
-}
+/* @keyframes popping {
+  0% { bottom: var(--initialTopPoint) }
+  50% { bottom: calc(var(--initialTopPoint) + var(--animheight)); }
+  70% { bottom: calc(var(--initialTopPoint) + (calc(var(--animheight) + calc(var(--animheight)) / 10))); }
+  100% { bottom: calc(var(--initialTopPoint) + var(--animheight)); }
+} */

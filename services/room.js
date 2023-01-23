@@ -1,16 +1,13 @@
 import { isPlayerMenuOpened, closePlayerMenu } from "../helpers/helpers.js";
 import { createPopup } from "./popup.js";
+import { createPlayer } from "../components/player/player.js";
 
-const player = document.createElement("div");
-player.classList.add('player', 'translate-center');
-const frame = document.getElementById("frame");
-frame.append(player);
+const PLAYER_COORDS = {
+  bottom: '50px',
+  left: '100px'
+}
 
-player.addEventListener("click", 
-  (event) => 
-    createPopup(event, [
-      { text: "test", callback: () => console.log("test cb")}
-    ]));
+const player = createPlayer(PLAYER_COORDS);
 
 frame.addEventListener("click", (event) => {
   setTimeout(() => {
