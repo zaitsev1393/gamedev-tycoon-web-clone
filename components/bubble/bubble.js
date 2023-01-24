@@ -1,5 +1,7 @@
-import { entriesIntoStyles, frame, player, runAsync } from "../../helpers/helpers.js";
-const log = console.log;
+import { entriesIntoStyles, frame, pixelize, player, runAsync } from "../../helpers/helpers.js";
+import { DAY } from "../../services/timer.js";
+const log = (...args) => console.log("--", ...args);
+
 // Contstants
 const BUBBLE_POPPING_TIME = 1000;
 const BUBBLE_TRANSITION_TIME = 300;
@@ -53,7 +55,9 @@ const createBubble = (value = 1, styles) => {
   bubble.classList.add("bubble");
   entriesIntoStyles(bubble, { 
     ...styles, 
-    ...DEFAULT_BUBBLE_STYLING 
+    width: pixelize(15 + value * 4),
+    height: pixelize(15 + value * 4),
+    "font-size": pixelize(10 + value * 2) 
   });
   bubble.innerHTML = value;
   document.body.append(bubble);
@@ -73,8 +77,11 @@ const popBubble = ({ value, originNode }) => {
   setTimeout(() => bubble.style.top = top - 25 + 'px', 700);
   setTimeout(() => bubble.style.top = top - 45 + 'px', 1000);
   setTimeout(() => moveBubble(bubble), BUBBLE_POPPING_TIME + 50);
-  score.add(value)
+  setTimeout(() => destroyBubble(bubble), BUBBLE_POPPING_TIME + BUBBLE_TRANSITION_TIME + 100);
+  score.add(value);
 }
+
+const destroyBubble = (bubble) => bubble.remove();
 
 const moveBubble = (bubble, coords = BUBBLES_ACCUMULATOR) => {
   bubble.classList.remove('popping');
@@ -92,12 +99,25 @@ const testPlayerBubbles = (number) => {
   }, rand(3000));
 }
 
+export const startDevelopment = (time) => {
+  log("Starting development");
+  const dayInterval = setInterval(() => time -= DAY, DAY);
+  const secondsInterval = setInterval(() => {
+    if(time < 0) {
+      clearInterval(dayInterval);
+      clearInterval(secondsInterval);
+      log("Development finished")
+      return;
+    }
+    if(rand(100) > 50) {
+      popBubble({ value: rand(5), originNode: player() })
+    }
+  }, 1000);
+}
+
 document.getElementById("produce-button").addEventListener("click", () => {
   console.log('producing bubble');
-  popBubble({
-    value: rand(5),
-    originNode: player()
-  })
+  startDevelopment(10000);
 })
 
 // runAsync(() => {

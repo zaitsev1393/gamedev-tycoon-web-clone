@@ -11,6 +11,7 @@ export const createPopup = (event, options) => {
   popupContainer.id = "popupContainer";
   popupContainer.classList.add("bordered-container", "scaling-appearing");
   popupContainer.style.position = "absolute";
+  popupContainer.style["z-index"] = 10000;
   popupContainer.style.top = top + "px";
   popupContainer.style.left = left + "px";  
   popupContainer.style.background = "white";

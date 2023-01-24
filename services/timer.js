@@ -5,12 +5,12 @@
 
 import { Observable } from "../helpers/observable.js";
 
-const { onTick } = (function() {
-  const DAY = 2030;
-  const WEEK = DAY * 7;
-  const MONTH = WEEK * 4;
-  const YEAR = MONTH * 12;
+export const DAY = 2030;
+export const WEEK = DAY * 7;
+export const MONTH = WEEK * 4;
+export const YEAR = MONTH * 12;
 
+const { onTick } = (function() {
   const onTick = new Observable();
 
   let GAME_INTERVAL = null;
