@@ -1,5 +1,6 @@
 @import "./components/bubble/bubble.css";
 @import "./components/player/player.css";
+@import "./components/game-builder/game-builder.css";
 @import "./components/progress-bar/progress-bar.css";
 
 body {
@@ -26,7 +27,8 @@ body {
   position: relative;
   background: snow;
   color: black;
-  left: 25vw;
+  left: 50%;
+  transform: translateX(-50%);
   top: 100px;
   width: 50vw;
   height: 400px;

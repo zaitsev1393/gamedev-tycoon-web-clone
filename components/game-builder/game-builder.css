@@ -1,0 +1,72 @@
+.game-builder-container {
+  opacity: 0;
+  position: absolute;
+  width: 40%;
+  min-height: 250px;
+  background-color: snow;
+  box-shadow: 0 0 10px rgba(0,0,0,.5);
+  border-radius: 10px;
+  border-radius: 5px;
+  border: 1px solid black;
+  z-index: 100000;
+  top: 175px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.close-button {
+  background: grey;
+  color: white;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  font-size: 6px;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+
+.appearing {
+  animation-name: appearing;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+.dissapearing {
+  animation-name: dissapearing;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+.close-button span {
+  font-size: 18px;
+}
+
+@keyframes appearing {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    top: 150px;
+    opacity: 1;
+  }
+}
+
+@keyframes dissapearing {
+  0% {
+    opacity: 1;
+    top: 150px;
+  }
+  100% {
+    opacity: 0;
+    top: 125px;
+  }
+}
