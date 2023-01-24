@@ -1,6 +1,14 @@
-import { entriesIntoStyles, frame, pixelize, player, runAsync, rand, getRandomElement } from "../../helpers/helpers.js";
+import { 
+  setStyle, 
+  frame, 
+  pixelize, 
+  player, 
+  rand,
+  log
+} from "../../helpers/helpers.js";
 import { DAY } from "../../services/timer.js";
-const log = (...args) => console.log("--", ...args);
+import { createProgressBar } from "../progress-bar/progress-bar.js";
+
 
 // Contstants
 const BUBBLE_POPPING_TIME = 1000;
@@ -32,9 +40,9 @@ const createScore = (initialValue) => {
   document.getElementById("frame").appendChild(scoreContainer)
   return {
     add: (value) => 
-      setTimeout(() => 
-        score.innerHTML = +score.innerHTML + value, BUBBLE_POPPING_TIME + BUBBLE_TRANSITION_TIME
-      )
+      setTimeout(() => {
+        score.innerHTML = +score.innerHTML + value, BUBBLE_POPPING_TIME + BUBBLE_TRANSITION_TIME;
+      })
   }
 }
 
@@ -48,7 +56,7 @@ export const generateBubbles = () => {
 const createBubble = (value = 1, styles) => {
   const bubble = document.createElement("div");
   bubble.classList.add("bubble");
-  entriesIntoStyles(bubble, { 
+  setStyle(bubble, { 
     ...styles, 
     width: pixelize(15 + value * 4),
     height: pixelize(15 + value * 4),
@@ -80,7 +88,7 @@ const destroyBubble = (bubble) => bubble.remove();
 
 const moveBubble = (bubble, coords = BUBBLES_ACCUMULATOR) => {
   bubble.classList.remove('popping');
-  entriesIntoStyles(bubble, coords);
+  setStyle(bubble, coords);
 }
 
 // Testing
@@ -94,8 +102,9 @@ const testPlayerBubbles = (number) => {
   }, rand(3000));
 }
 
-export const startDevelopment = (time) => {
+export const startDevelopment = async (time) => {
   log("Starting development");
+  const progressBar = await createProgressBar(time);
   const dayInterval = setInterval(() => time -= DAY, DAY);
   const secondsInterval = setInterval(() => {
     if(time < 0) {
@@ -105,7 +114,7 @@ export const startDevelopment = (time) => {
       return;
     }
     if(rand(100) > 50) {
-      popBubble({ value: rand(5), originNode: player() })
+      popBubble({ value: rand(5), originNode: player(), progressBar })
     }
   }, 1000);
 }

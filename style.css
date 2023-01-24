@@ -1,5 +1,6 @@
 @import "./components/bubble/bubble.css";
 @import "./components/player/player.css";
+@import "./components/progress-bar/progress-bar.css";
 
 body {
   /* background: rgb(29, 19, 81); */
