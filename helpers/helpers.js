@@ -9,3 +9,4 @@ export const entriesIntoStyles = (node, styles) =>
 export const runAsync = (fn) => setTimeout(fn, 0);
 
 export const frame = () => document.getElementById("frame");
+export const player = () => document.getElementsByClassName("player")[0];

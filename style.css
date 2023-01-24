@@ -41,20 +41,8 @@ body {
   transform: scale(0);
 }
 
-.popping {
-  animation-name: popping;
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
-}
-
 @keyframes scalingAppearing {
   0% { transform: scale(0); }
   100% { transform: scale(1); }
 }
 
-/* @keyframes popping {
-  0% { bottom: var(--initialTopPoint) }
-  50% { bottom: calc(var(--initialTopPoint) + var(--animheight)); }
-  70% { bottom: calc(var(--initialTopPoint) + (calc(var(--animheight) + calc(var(--animheight)) / 10))); }
-  100% { bottom: calc(var(--initialTopPoint) + var(--animheight)); }
-} */
