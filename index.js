@@ -10,3 +10,7 @@ const close = () => {
   log("click");
   closeBuilder()
 };
+
+function pickGenre(event) {
+  log("picked: ", event);
+}

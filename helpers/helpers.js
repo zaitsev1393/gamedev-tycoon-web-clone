@@ -14,3 +14,15 @@ export const createElement = (elementName) => document.createElement(elementName
 export const pixelize = (number) => number + "px";
 export const getRandomElement = (arr) => arr[rand(arr.length)];
 export const rand = (multi) => Math.ceil(Math.random() * multi);
+
+if(!Array.prototype.uniqPush) {
+  Array.prototype.uniqPush = function(elem) {
+    let newArray = this;
+    if(this.some(e => e == elem)) {
+      newArray = newArray.filter(e => e != elem);
+    } else {
+      newArray.push(elem);
+    }
+    return newArray;
+  }
+}
