@@ -1,5 +1,6 @@
 import { createPopup } from "../../services/popup.js";
 import { entriesIntoStyles } from "../../helpers/helpers.js";
+import { startDevelopment } from "../bubble/bubble.js";
 
 export const createPlayer = (coords, options = {}) => {
   const player = document.createElement("div");
@@ -12,7 +13,7 @@ export const createPlayer = (coords, options = {}) => {
   player.addEventListener("click", 
     (event) => 
       createPopup(event, [
-        { text: "test", callback: () => console.log("test cb")}
+        { text: "Start development", callback: () => startDevelopment(15000) }
       ]));
 
   return player;

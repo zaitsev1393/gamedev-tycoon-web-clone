@@ -1,4 +1,4 @@
-import { entriesIntoStyles, frame, pixelize, player, runAsync } from "../../helpers/helpers.js";
+import { entriesIntoStyles, frame, pixelize, player, runAsync, rand, getRandomElement } from "../../helpers/helpers.js";
 import { DAY } from "../../services/timer.js";
 const log = (...args) => console.log("--", ...args);
 
@@ -19,11 +19,6 @@ const BUBBLES_ACCUMULATOR = {
   top: frame().getBoundingClientRect().top + 10 + "px",
   left: frame().getBoundingClientRect().left + (frame().getBoundingClientRect().width / 2)  + "px"
 }
-
-// Helpers
-const randomValue = (obj) => obj[getRandomElement(Object.keys(obj))];
-const getRandomElement = (arr) => arr[rand(arr.length)];
-const rand = (multi) => Math.ceil(Math.random() * multi);
 
 const createScore = (initialValue) => {
   let scoreContainer = document.createElement("div");
@@ -115,10 +110,10 @@ export const startDevelopment = (time) => {
   }, 1000);
 }
 
-document.getElementById("produce-button").addEventListener("click", () => {
-  console.log('producing bubble');
-  startDevelopment(10000);
-})
+// document.getElementById("produce-button").addEventListener("click", () => {
+//   console.log('producing bubble');
+//   startDevelopment(10000);
+// })
 
 // runAsync(() => {
 //   const player = document.getElementsByClassName("player")[0] || {};

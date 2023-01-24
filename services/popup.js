@@ -2,8 +2,7 @@ export const createPopup = (event, options) => {
   const exisitingPopupContainer = document.getElementById("popupContainer");
   if(options?.length == 0) return;
   if(exisitingPopupContainer) {
-    document.body.removeChild(exisitingPopupContainer);
-    return;
+    return closePopup();
   } 
 
   const { pageX: left, pageY: top } = event;
@@ -16,12 +15,18 @@ export const createPopup = (event, options) => {
   popupContainer.style.left = left + "px";  
   popupContainer.style.background = "white";
   for(let option of options) {
-    console.log("option: ", option);
     const optionContainer = document.createElement("div");
     optionContainer.style.cursor = "pointer";
     optionContainer.innerHTML = option.text;
-    optionContainer.onclick = option.callback || (() => {})();
+    optionContainer.onclick = () => {
+      closePopup();
+      option.callback();
+    }
     popupContainer.append(optionContainer);
   }
   document.body.append(popupContainer);
+}
+
+const closePopup = () => {
+  document.getElementById("popupContainer").remove();
 }
