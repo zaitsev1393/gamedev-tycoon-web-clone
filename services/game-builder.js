@@ -1,3 +1,4 @@
+import { startDevelopment } from "../components/bubble/bubble.js";
 import { log } from "../helpers/helpers.js";
 
 const Game = () => ({
@@ -25,23 +26,25 @@ function closeHandler() {
 }
 
 export const closeBuilder = () => {
-  
+  closeHandler();
 }
 
 export const openBuilder = () => {
   const template = document.getElementById("game-builder");
   if(!template) return;
   document.body.append(template.content.cloneNode(true));
-  getCloseButtonElement().addEventListener("click", closeHandler);
+  getCloseButtonElement().onclick = closeHandler;
   listenBuilder();
 }
 
 const listenBuilder = () => {
   listenGenreSection();
   listenPlatformSection();
+  listenGameNameInput();
+  listenInteractiveButtons();
 }
 
-function genreButtonHandler(event) {
+const genreButtonHandler = (event) => {
   const genre = event.target.innerText;
   event.target.classList.toggle("selected");
   GameState.genres = GameState.genres.uniqPush(genre);
@@ -67,4 +70,19 @@ const listenPlatformSection = () => {
   for(let button of platformButtons) {
     button.addEventListener("click", platformButtonHandler);
   }
+}
+
+const listenGameNameInput = () => {
+  const input = document.querySelector("#game-name-input");
+  const gameNameLabel = document.querySelector("#game-name");
+  input.addEventListener("keyup", ({ target }) => {
+    gameNameLabel.innerText = target.value;
+  })
+}
+
+const listenInteractiveButtons = () => {
+  const startButton = document.querySelector("[data-role='start']");
+  const cancelButton = document.querySelector("[data-role='cancel']");
+  startButton.onclick = startDevelopment;
+  cancelButton.onclick = closeHandler;
 }
