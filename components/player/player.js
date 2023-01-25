@@ -18,7 +18,6 @@ export const createPlayer = (coords, options = {}) => {
           text: "Start development", 
           callback: () => {
             openBuilder();
-            // startDevelopment(15000);
           }
         }
       ]));

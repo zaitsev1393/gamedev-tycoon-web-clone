@@ -12,7 +12,7 @@ export const frame = () => document.getElementById("frame");
 export const player = () => document.getElementsByClassName("player")[0];
 export const createElement = (elementName) => document.createElement(elementName);
 export const pixelize = (number) => number + "px";
-export const getRandomElement = (arr) => arr[rand(arr.length)];
+export const getRandomElement = (arr) => arr[rand(arr.length - 1)];
 export const rand = (multi) => Math.ceil(Math.random() * multi);
 
 if(!Array.prototype.uniqPush) {
