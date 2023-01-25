@@ -1,6 +1,5 @@
 import { createPopup } from "../../services/popup.js";
 import { setStyle } from "../../helpers/helpers.js";
-import { startDevelopment } from "../bubble/bubble.js";
 import { openBuilder } from "../../services/game-builder.js";
 
 export const createPlayer = (coords, options = {}) => {
@@ -16,9 +15,7 @@ export const createPlayer = (coords, options = {}) => {
       createPopup(event, [
         { 
           text: "Start development", 
-          callback: () => {
-            openBuilder();
-          }
+          callback: () => openBuilder()
         }
       ]));
 

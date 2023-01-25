@@ -11,6 +11,8 @@ export const WEEK = DAY * 7;
 export const MONTH = WEEK * 4;
 export const YEAR = MONTH * 12;
 
+export const SMALL_GAME_TIME = 15000;
+
 const { onTick, pauseGame, startGame } = (function() {
   const onTick = new Observable();
 

@@ -2,12 +2,8 @@ import {
   setStyle, 
   frame, 
   pixelize, 
-  player, 
-  rand,
-  log
+  rand
 } from "../../helpers/helpers.js";
-import { DAY } from "../../services/timer.js";
-import { createProgressBar } from "../progress-bar/progress-bar.js";
 
 
 // Contstants
@@ -67,7 +63,7 @@ const createBubble = (value = 1, styles) => {
   return bubble;
 }
 
-const popBubble = ({ value, originNode }) => {
+export const popBubble = ({ value, originNode }) => {
   const { top, left, width, height } = originNode.getBoundingClientRect();
   const styles = { 
     background: COLORS.TECHNICAL, 
@@ -101,30 +97,3 @@ const testPlayerBubbles = (number) => {
     testPlayerBubbles(--number);
   }, rand(3000));
 }
-
-export const startDevelopment = async (time) => {
-  log("Starting development");
-  const progressBar = await createProgressBar(time);
-  const dayInterval = setInterval(() => time -= DAY, DAY);
-  const secondsInterval = setInterval(() => {
-    if(time < 0) {
-      clearInterval(dayInterval);
-      clearInterval(secondsInterval);
-      log("Development finished")
-      return;
-    }
-    if(rand(100) > 50) {
-      popBubble({ value: rand(5), originNode: player(), progressBar })
-    }
-  }, 1000);
-}
-
-// document.getElementById("produce-button").addEventListener("click", () => {
-//   console.log('producing bubble');
-//   startDevelopment(10000);
-// })
-
-// runAsync(() => {
-//   const player = document.getElementsByClassName("player")[0] || {};
-//   popBubble({ value: 5, originNode: player })
-// });

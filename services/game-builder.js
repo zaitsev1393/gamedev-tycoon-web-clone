@@ -1,31 +1,72 @@
-import { startDevelopment } from "../components/bubble/bubble.js";
+import { createProgressBar } from "../components/progress-bar/progress-bar.js";
 import descriptiveTitles from "../data/game-names/description-titles.js";
 import majorTitles from "../data/game-names/major-titles.js";
 import numericalParts from "../data/game-names/numerical-parts.js";
-import { getRandomElement, log } from "../helpers/helpers.js";
-import { pauseGame, startGame } from "./timer.js";
+import { getRandomElement, log, player, rand } from "../helpers/helpers.js";
+import { pauseGame, startGame, DAY } from "./timer.js";
+import { popBubble } from "../components/bubble/bubble.js";
 
-const Game = () => ({
+const GameState = () => ({
   name: '',
   genres: [],
   platforms: [],
-  timeToDevelop: 15000
+  timeToFinishDevelopment: 15000
 })
 
-let GameState;
+let Game;
 
 const BUILDER_CONTAINER_REMOVING_DELAY = 500;
 
-const createNewGame = () => GameState = structuredClone(Game());
+const createNewGame = () => Game = structuredClone(GameState());
 createNewGame();
 
 const getCloseButtonElement = () => document.querySelector(".game-builder.close-button");
 
-function closeHandler() {
-  closeBuilder();
-  createNewGame();
-  startGame();
-  log("game state reset: ", GameState);
+export const startDevelopment = async (gameData) => {
+  log("Starting development");
+  const progressBar = await createProgressBar(gameData.timeToFinishDevelopment);
+  startBubbling(gameData);
+
+  document
+    .querySelector("#pause")
+    .addEventListener('click', () => {
+      pauseBubbling(gameData);
+      progressBar.pause();
+    });
+
+  document
+    .querySelector("#continue")
+    .addEventListener('click', () => {
+      startBubbling(gameData);
+      progressBar.continue();
+    });
+
+  return {
+    pause: () => progressBar.pause(),
+    continue: () => progressBar.continue()
+  }
+}
+
+const startBubbling = (gameData) => {
+  const developmentInterval = setInterval(() => {
+    if(gameData.timeToFinishDevelopment < 0) {
+      clearInterval(developmentInterval);
+      log("Development finished")
+      return;
+    }
+    if(rand(100) > 50) {
+      popBubble({ value: rand(5), originNode: player() })
+    }
+    gameData.timeToFinishDevelopment -= 1000;
+  }, 1000);
+  gameData.developmentInterval = developmentInterval;
+  log("Bubble started, game data: ", gameData);
+}
+
+const pauseBubbling = (gameData) => {
+  clearInterval(gameData.developmentInterval);
+  gameData.developmentInterval = null;
+  log("Bubble paused, game data: ", gameData);
 }
 
 export const closeBuilder = () => {
@@ -56,15 +97,15 @@ const listenBuilder = () => {
 const genreButtonHandler = (event) => {
   const genre = event.target.innerText;
   event.target.classList.toggle("selected");
-  GameState.genres = GameState.genres.uniqPush(genre);
-  log("game state: ", GameState);
+  Game.genres = Game.genres.uniqPush(genre);
+  log("game state: ", Game);
 }
 
 const platformButtonHandler = (event) => {
   const platform = event.target.innerText;
   event.target.classList.toggle("selected");
-  GameState.platforms = GameState.platforms.uniqPush(platform);
-  log("game state: ", GameState);
+  Game.platforms = Game.platforms.uniqPush(platform);
+  log("game state: ", Game);
 }
 
 const listenGenreSection = () => {
@@ -98,8 +139,8 @@ const setGameName = (name) => {
   const gameNameLabel = document.querySelector("#game-name");
   gameNameLabel.innerText = name;
   input.value = name;
-  GameState.name = name;
-  log("game state: ", GameState);
+  Game.name = name;
+  log("game state: ", Game);
 }
 
 const listenInteractiveButtons = () => {
@@ -109,7 +150,14 @@ const listenInteractiveButtons = () => {
   nameDice.onclick = () => setGameName(getRandomName());
   startButton.onclick = () => {
     closeBuilder();
-    startDevelopment(GameState.timeToDevelop);
+    startDevelopment(Game);
   }
   cancelButton.onclick = closeHandler;
+}
+
+function closeHandler() {
+  closeBuilder();
+  createNewGame();
+  startGame();
+  log("game state reset: ", Game);
 }
