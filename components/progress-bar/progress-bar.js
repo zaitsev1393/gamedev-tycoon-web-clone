@@ -1,7 +1,7 @@
 import { setStyle, frame, log, createElement, runAsync } from "../../helpers/helpers.js";
 import { SMALL_GAME_TIME } from "../../services/timer.js";
 
-const PROGRESS_STEPS = 100;
+const PROGRESS_STEPS = 300;
 
 export const createProgressBar = (time) => {
   return new Promise((resolve, reject) => {
@@ -39,7 +39,7 @@ export const createProgressBar = (time) => {
 
 const startProgressBar = (development) => {
   development.interval = setInterval(() => {
-    development.progress += Math.floor(100 / PROGRESS_STEPS);
+    development.progress += 100 / PROGRESS_STEPS;
     if(development.progress >= 100) {
       pauseProgressBar(development);
     }
