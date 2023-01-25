@@ -3,6 +3,7 @@
 // Week = 15.2s;
 // Day = 2.03s;
 
+import { log } from "../helpers/helpers.js";
 import { Observable } from "../helpers/observable.js";
 
 export const DAY = 2030;
@@ -10,7 +11,7 @@ export const WEEK = DAY * 7;
 export const MONTH = WEEK * 4;
 export const YEAR = MONTH * 12;
 
-const { onTick } = (function() {
+const { onTick, pauseGame, startGame } = (function() {
   const onTick = new Observable();
 
   let GAME_INTERVAL = null;
@@ -18,7 +19,7 @@ const { onTick } = (function() {
   (document.getElementById("reset-time") || {}).onclick = () => {
     clearInterval(GAME_INTERVAL);
     localStorage.setItem("gameTime", 0);
-    startTimer();
+    startGame();
   }
 
   const getCurrentDay = (currentTime) => {
@@ -54,9 +55,10 @@ const { onTick } = (function() {
   const getCurrentYear = (currentTime) => Math.floor(currentTime / YEAR) ;
 
   const timer = document.getElementById("timer");
-  const startTimer = (
+  const startGame = (
     time = Number(localStorage.getItem("gameTime"))
   ) => {
+    log("Game started");
     const gameTime = time += DAY;
     render(timer, gameTime);
     GAME_INTERVAL = setInterval(() => {
@@ -81,9 +83,14 @@ const { onTick } = (function() {
     return `D: ${ day } - W: ${ week } - M: ${ month } - Y: ${ 1985 + year }`;
   }
 
-  startTimer();
+  const pauseGame = () => {
+    log("Game paused");
+    clearInterval(GAME_INTERVAL);
+  }
 
-  return { onTick }
+  startGame();
+
+  return { onTick, pauseGame, startGame }
 })();
 
-export { onTick };
+export { onTick, pauseGame, startGame };
