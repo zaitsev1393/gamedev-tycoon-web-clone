@@ -63,21 +63,25 @@ const createBubble = (value = 1, styles) => {
   return bubble;
 }
 
-export const popBubble = ({ value, originNode }) => {
-  const { top, left, width, height } = originNode.getBoundingClientRect();
-  const styles = { 
-    background: COLORS.TECHNICAL, 
-    top: top + (height / 2) - (parseInt(DEFAULT_BUBBLE_STYLING.width) / 2) + "px", 
-    left: left + (width / 2) - (parseInt(DEFAULT_BUBBLE_STYLING.width) / 2) + "px",
-  };
-  const bubble = createBubble(value, styles);
-  setTimeout(() => bubble.style.top = top - 40 + 'px', 300);
-  setTimeout(() => bubble.style.top = top - 45 + 'px', 400);
-  setTimeout(() => bubble.style.top = top - 25 + 'px', 700);
-  setTimeout(() => bubble.style.top = top - 45 + 'px', 1000);
-  setTimeout(() => moveBubble(bubble), BUBBLE_POPPING_TIME + 50);
-  setTimeout(() => destroyBubble(bubble), BUBBLE_POPPING_TIME + BUBBLE_TRANSITION_TIME + 100);
-  score.add(value);
+export const popBubble = async ({ value, originNode }) => {
+  return new Promise((resolve) => {
+    const { top, left, width, height } = originNode.getBoundingClientRect();
+    const styles = { 
+      background: COLORS.TECHNICAL, 
+      top: top + (height / 2) - (parseInt(DEFAULT_BUBBLE_STYLING.width) / 2) + "px", 
+      left: left + (width / 2) - (parseInt(DEFAULT_BUBBLE_STYLING.width) / 2) + "px",
+    };
+    const bubble = createBubble(value, styles);
+    setTimeout(() => bubble.style.top = top - 40 + 'px', 300);
+    setTimeout(() => bubble.style.top = top - 45 + 'px', 400);
+    setTimeout(() => bubble.style.top = top - 25 + 'px', 700);
+    setTimeout(() => bubble.style.top = top - 45 + 'px', 1000);
+    setTimeout(() => moveBubble(bubble), BUBBLE_POPPING_TIME + 50);
+    setTimeout(() => {
+      destroyBubble(bubble);
+      resolve({ technical: value });
+    }, BUBBLE_POPPING_TIME + BUBBLE_TRANSITION_TIME + 100);
+  });
 }
 
 const destroyBubble = (bubble) => bubble.remove();

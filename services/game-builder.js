@@ -3,21 +3,38 @@ import descriptiveTitles from "../data/game-names/description-titles.js";
 import majorTitles from "../data/game-names/major-titles.js";
 import numericalParts from "../data/game-names/numerical-parts.js";
 import { getRandomElement, log, player, rand } from "../helpers/helpers.js";
-import { pauseGame, startGame, DAY } from "./timer.js";
+import { pauseGame, startGame, DAY, SMALL_GAME_TIME } from "./timer.js";
 import { popBubble } from "../components/bubble/bubble.js";
+import { GAME_TYPE } from "./game-development.js";
 
 const GameState = () => ({
   name: '',
+  gameType: GAME_TYPE.SMALL,
   genres: [],
   platforms: [],
-  timeToFinishDevelopment: 15000
+  progress: {
+    technical: 0,
+    design: 0,
+    bugs: 0
+  },
+  developers: [],
+  timeToFinishDevelopment: SMALL_GAME_TIME
 })
 
 let Game;
 
 const BUILDER_CONTAINER_REMOVING_DELAY = 500;
 
-const createNewGame = () => Game = structuredClone(GameState());
+const createNewGame = () => Game = new Proxy(structuredClone(GameState()), {
+  set: (target, key, value) => {
+    target[key] = value;
+    log(`${ key } set to ${ value }`);
+    return true;
+  },
+  get: (target, key) => {
+    return target[key];
+  }
+});
 createNewGame();
 
 const getCloseButtonElement = () => document.querySelector(".game-builder.close-button");
@@ -48,18 +65,21 @@ export const startDevelopment = async (gameData) => {
 }
 
 const startBubbling = (gameData) => {
-  const developmentInterval = setInterval(() => {
-    if(gameData.timeToFinishDevelopment < 0) {
-      clearInterval(developmentInterval);
-      log("Development finished")
-      return;
-    }
-    if(rand(100) > 50) {
-      popBubble({ value: rand(5), originNode: player() })
-    }
-    gameData.timeToFinishDevelopment -= 1000;
-  }, 1000);
-  gameData.developmentInterval = developmentInterval;
+  // const developmentInterval = setInterval(async () => {
+    // if(gameData.timeToFinishDevelopment < 0) {
+    //   clearInterval(developmentInterval);
+    //   log("Development finished")
+    //   return;
+    // }
+    // if(rand(100) > 50) {
+    //   const step = await popBubble({ value: rand(5), originNode: player() });
+    //   for(let key in step) {
+    //     gameData.progress[key] += step[key];
+    //   }
+    // }
+    // gameData.timeToFinishDevelopment -= 1000;
+  // }, 1000);
+  // gameData.developmentInterval = developmentInterval;
   log("Bubble started, game data: ", gameData);
 }
 
