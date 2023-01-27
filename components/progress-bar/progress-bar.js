@@ -37,7 +37,7 @@ export const createProgressBar = (gameData) => {
     const resumeSub = onGameResumed.subscribe(() => startProgressBar(state));
 
     startProgressBar(state);
-    log("state: ", state);
+    // log("state: ", state);
     resolve({
       pause: () => pauseProgressBar(state),
       continue: () => startProgressBar(state),

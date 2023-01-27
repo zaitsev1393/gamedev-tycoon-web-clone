@@ -67,8 +67,8 @@ const {
   const startGame = (
     time = Number(localStorage.getItem("gameTime"))
   ) => {
-    onGameResumed.next(true);
     log("Game started");
+    onGameResumed.next(true);
     const gameTime = time += DAY;
     render(timer, gameTime);
     GAME_INTERVAL = setInterval(() => {

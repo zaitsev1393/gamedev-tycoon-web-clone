@@ -17,7 +17,7 @@ const GameState = () => ({
   progress: {
     technical: 0,
     design: 0,
-    bugs: 0
+    bug: 0
   },
   developers: [],
   timeToFinishDevelopment: GAME_DEVELOPMENT_TIME.SMALL_GAME
@@ -37,10 +37,9 @@ export const startDevelopment = async (gameData) => {
   gameData.developers = getDevs();
   log("Starting development");
   log("game: ", gameData);
+  
   const progressBar = await createProgressBar(gameData);
-
   const gameDevelopment = createDevelopment(gameData);
-
   gameDevelopment.start();
 
   return {

@@ -2,6 +2,7 @@ import { popBubble } from "../components/bubble/bubble.js";
 import { createPlayerComponent } from "../components/player/player.js";
 import { log, rand } from "../helpers/helpers.js";
 import { Observable } from "../helpers/observable.js";
+import { onGamePause, onGameResumed } from "../services/timer.js";
 
 log("player.js model init");
 
@@ -24,6 +25,7 @@ const createMainPlayer = () =>
 
 export const initDevs = () => {
   devs.push(createMainPlayer());
+  window.devs = devs;
 }
 
 export const getDevs = () => devs;
@@ -51,7 +53,11 @@ export function Player(data) {
   }
   
   let interval = null;
+  let currentProject = null;
   const playerInfo = { ...DEFAULT_SETUP, ...data };
+
+  // const pauseSub = onGamePause.subscribe(() => pauseWork());
+  // const resumeSub = onGameResumed.subscribe(() => work(currentProject));
   
   const perks = [];
   const skillset = {
@@ -108,11 +114,16 @@ export function Player(data) {
   }
 
   const work = (gameInfo) => {
+    currentProject = gameInfo;
+    log("currentProject: ", currentProject);
     let { timeToFinishDevelopment } = gameInfo;
     interval = setInterval(() => {
+      log("work interval tick");
+      // log("player model timeToFinishDevelopment: ", timeToFinishDevelopment);
       if(timeToFinishDevelopment <= 0) {
         onPointProduced.next({ finished: true })
         clearInterval(interval);
+        currentProject = null;
         return;
       }
       if(Math.random() < CHANGE_TO_PRODUCE ) {
@@ -120,10 +131,15 @@ export function Player(data) {
       }
       timeToFinishDevelopment -= 300;
     }, 300);
+    log("Interval on work(): ", interval);
   }
 
   const promote = ({ newSalary }) => salary = newSalary;
-  const pauseWork = () => clearInterval(interval);  
+  const pauseWork = () => {
+    log("Interval on pauseWork(): ", interval);
+    clearInterval(interval);
+    interval = null;
+  };
   return {
     skills,
     getSalary,
