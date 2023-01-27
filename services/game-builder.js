@@ -4,7 +4,10 @@ import majorTitles from "../data/game-names/major-titles.js";
 import numericalParts from "../data/game-names/numerical-parts.js";
 import { getRandomElement, log, player, rand } from "../helpers/helpers.js";
 import { pauseGame, startGame, DAY, SMALL_GAME_TIME } from "./timer.js";
-import { GAME_TYPE } from "./game-development.js";
+import { createDevelopment, GAME_DEVELOPMENT_TIME, GAME_TYPE } from "./game-development.js";
+import { getDevs } from "../models/player.js";
+
+log("game-builder.js init");
 
 const GameState = () => ({
   name: '',
@@ -17,32 +20,29 @@ const GameState = () => ({
     bugs: 0
   },
   developers: [],
-  timeToFinishDevelopment: SMALL_GAME_TIME
+  timeToFinishDevelopment: GAME_DEVELOPMENT_TIME.SMALL_GAME
 })
 
 let Game;
 
 const BUILDER_CONTAINER_REMOVING_DELAY = 500;
 
-const createNewGame = () => Game = new Proxy(structuredClone(GameState()), {
-  set: (target, key, value) => {
-    target[key] = value;
-    log(`${ key } set to ${ value }`);
-    return true;
-  },
-  get: (target, key) => {
-    return target[key];
-  }
-});
+const createNewGame = () => Game = structuredClone(GameState());
+
 createNewGame();
 
 const getCloseButtonElement = () => document.querySelector(".game-builder.close-button");
 
 export const startDevelopment = async (gameData) => {
+  gameData.developers = getDevs();
   log("Starting development");
-  const progressBar = await createProgressBar(gameData.timeToFinishDevelopment);
-  startBubbling(gameData);
+  log("game: ", gameData);
+  const progressBar = await createProgressBar(gameData);
+  // startBubbling(gameData);
 
+  const gameDevelopment = createDevelopment(gameData);
+
+  gameDevelopment.start();
   document
     .querySelector("#pause")
     .addEventListener('click', () => {

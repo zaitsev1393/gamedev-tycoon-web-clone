@@ -1,8 +1,6 @@
 if(!Number.prototype.inRange) {
   Number.prototype.inRange = function(range) {
     if(range.length != 2) return false;
-    log("this: ", this);
-    log("range: ", range);
     return this > range[0] && this <= range[1];
   }
 }

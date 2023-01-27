@@ -10,8 +10,9 @@ import {
 const BUBBLE_POPPING_TIME = 1000;
 const BUBBLE_TRANSITION_TIME = 300;
 const COLORS = {
-  TECHNICAL: "#0094C6",
-  DESIGN: "#F15946"
+  technical: "#0094C6",
+  design: "orange",
+  bug: "crimson"
 }
 
 const DEFAULT_BUBBLE_STYLING = {
@@ -67,7 +68,7 @@ export const popBubble = async ({ value, originNode }) => {
   return new Promise((resolve) => {
     const { top, left, width, height } = originNode.getBoundingClientRect();
     const styles = { 
-      background: COLORS.TECHNICAL, 
+      background: COLORS[value.type], 
       top: top + (height / 2) - (parseInt(DEFAULT_BUBBLE_STYLING.width) / 2) + "px", 
       left: left + (width / 2) - (parseInt(DEFAULT_BUBBLE_STYLING.width) / 2) + "px",
     };

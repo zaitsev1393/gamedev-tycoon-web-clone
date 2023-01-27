@@ -3,21 +3,40 @@ import { createPlayerComponent } from "../components/player/player.js";
 import { log, rand } from "../helpers/helpers.js";
 import { Observable } from "../helpers/observable.js";
 
+log("player.js model init");
+
+const CHANGE_TO_PRODUCE = 0.2;
+
 export const BACKGROUND = {
   SELF_TAUGHT_CODER: [50, 15, 35, 10]
 }
 
+let devs = [];
+
+const createMainPlayer = () =>
+  new Player({
+    background: BACKGROUND.SELF_TAUGHT_CODER,
+    coords: {
+      top: '100px',
+      left: '200px'
+    }
+  })
+
+export const initDevs = () => {
+  devs.push(createMainPlayer());
+}
+
+export const getDevs = () => devs;
+
 export function Player(data) {
   const produceBubble = () => {
-    const value = produceValue({ skills });
+    const value = produceValue();
     log("Produced value: ", value);
-    popBubble({ 
-      value,
-      originNode: playerInfo.node
-    });
+    popBubble({ value, originNode: playerInfo.node });
   }
 
   const onPointProduced = new Observable();
+  const onFinishedDevelopment = new Observable();
 
   const DEFAULT_SETUP = { 
     background: BACKGROUND.GUY_FROM_TWITTER,
@@ -31,7 +50,7 @@ export function Player(data) {
     coords: {}
   }
   
-  const interval = null;
+  let interval = null;
   const playerInfo = { ...DEFAULT_SETUP, ...data };
   
   const perks = [];
@@ -72,15 +91,18 @@ export function Player(data) {
     }
   }
   
-  const produceValue = ({ skills }) => {
+  const produceValue = () => {
     const producingLikelihood = calculateProducingLikelihood(skills);
     const needle = Math.random();
     for(let key in producingLikelihood) {
       if(needle.inRange(producingLikelihood[key])) {
-        return {
+        const value = {
           points: rand(5),
           type: key
         };
+        log("value: ", value);
+        onPointProduced.next(value)
+        return value;
       }
     }
   }
@@ -89,10 +111,13 @@ export function Player(data) {
     let { timeToFinishDevelopment } = gameInfo;
     interval = setInterval(() => {
       if(timeToFinishDevelopment <= 0) {
+        onPointProduced.next({ finished: true })
         clearInterval(interval);
         return;
       }
-      produceValue({ skills });
+      if(Math.random() < CHANGE_TO_PRODUCE ) {
+        produceBubble();
+      }
       timeToFinishDevelopment -= 300;
     }, 300);
   }
@@ -103,6 +128,7 @@ export function Player(data) {
     skills,
     getSalary,
     produceBubble,
+    produceValue,
     promote,
     work,
     pauseWork,
