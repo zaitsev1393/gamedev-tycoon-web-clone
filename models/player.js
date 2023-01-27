@@ -41,6 +41,7 @@ export function Player(data) {
   const onFinishedDevelopment = new Observable();
 
   const DEFAULT_SETUP = { 
+    name: "John Doe",
     background: BACKGROUND.GUY_FROM_TWITTER,
     salary: 300,
     specialization: null,
@@ -106,40 +107,36 @@ export function Player(data) {
           points: rand(5),
           type: key
         };
-        log("value: ", value);
         onPointProduced.next(value)
         return value;
       }
     }
   }
 
+  const promote = ({ newSalary }) => salary = newSalary;
+  
   const work = (gameInfo) => {
     currentProject = gameInfo;
-    log("currentProject: ", currentProject);
-    let { timeToFinishDevelopment } = gameInfo;
     interval = setInterval(() => {
-      log("work interval tick");
-      // log("player model timeToFinishDevelopment: ", timeToFinishDevelopment);
-      if(timeToFinishDevelopment <= 0) {
-        onPointProduced.next({ finished: true })
-        clearInterval(interval);
-        currentProject = null;
-        return;
-      }
       if(Math.random() < CHANGE_TO_PRODUCE ) {
         produceBubble();
       }
-      timeToFinishDevelopment -= 300;
     }, 300);
-    log("Interval on work(): ", interval);
+    log(`${ playerInfo.name } is working`)
   }
 
-  const promote = ({ newSalary }) => salary = newSalary;
   const pauseWork = () => {
-    log("Interval on pauseWork(): ", interval);
     clearInterval(interval);
     interval = null;
+    log(`${ playerInfo.name } paused work`)
   };
+  
+  const finishWork = () => {
+    pauseWork();
+    onPointProduced.next({ finished: true })
+    log(`${ playerInfo.name } finished work`)
+  }
+
   return {
     skills,
     getSalary,
@@ -147,6 +144,7 @@ export function Player(data) {
     produceValue,
     promote,
     work,
+    finishWork,
     pauseWork,
     onPointProduced
   }

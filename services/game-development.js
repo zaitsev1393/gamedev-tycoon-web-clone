@@ -20,6 +20,9 @@ export const createDevelopment = (setup) => {
 
   const finish = () => {
     clearInterval(gameDevelopmentInterval);
+    setup.developers.forEach((dev) => dev.finishWork());
+    devSubs.forEach(sub => sub.unsubscribe());
+    devSubs = [];
     pauseSub.unsubscribe();
     resumeSub.unsubscribe();
   }
@@ -35,12 +38,12 @@ export const createDevelopment = (setup) => {
   const start = () => {
     gameDevelopmentInterval = setInterval(() => {
       if(setup.timeToFinishDevelopment <= 0) {
-        clearInterval(gameDevelopmentInterval);
-        return;
+        return finish(setup)
       }
       log("setup.timeToFinishDevelopment: ", setup.timeToFinishDevelopment);
       setup.timeToFinishDevelopment -= 1000
     }, 1000);
+
     setup.developers.forEach(developer => {
       developer.work(setup);
       devSubs.push(developer.onPointProduced.subscribe(({ points, type, finished }) => {
