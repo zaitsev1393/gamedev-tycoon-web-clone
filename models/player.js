@@ -1,6 +1,7 @@
 import { popBubble } from "../components/bubble/bubble.js";
 import { createPlayerComponent } from "../components/player/player.js";
 import { log, rand } from "../helpers/helpers.js";
+import { Observable } from "../helpers/observable.js";
 
 export const BACKGROUND = {
   SELF_TAUGHT_CODER: [50, 15, 35, 10]
@@ -8,22 +9,25 @@ export const BACKGROUND = {
 
 export function Player(data) {
   const produceBubble = () => {
-    log("playerInfo: ", playerInfo);
+    const value = produceValue({ skills });
+    log("Produced value: ", value);
     popBubble({ 
-      value: {
-        points: rand(5), 
-        type: 'technical'
-      },
+      value,
       originNode: playerInfo.node
     });
   }
+
+  const onPointProduced = new Observable();
 
   const DEFAULT_SETUP = { 
     background: BACKGROUND.GUY_FROM_TWITTER,
     salary: 300,
     specialization: null,
     perks: [],
-    node: createPlayerComponent({ coords: data.coords, callback: produceBubble }),
+    node: createPlayerComponent({ 
+      coords: data.coords, 
+      callback: produceBubble 
+    }),
     coords: {}
   }
   
@@ -68,28 +72,27 @@ export function Player(data) {
     }
   }
   
-  const produceValue = (gameInfo, spectrum) => {
+  const produceValue = ({ skills }) => {
+    const producingLikelihood = calculateProducingLikelihood(skills);
     const needle = Math.random();
-    for(let key in spectrum) {
-      log("needle: ", needle);
-      log("spectrum[key]: ", spectrum[key]);
-      if(needle.inRange(spectrum[key])) {
-        const value = { [key]: Math.ceil(Math.random() * 5) };
-        log("Produced value: ", value);
-        return value;
+    for(let key in producingLikelihood) {
+      if(needle.inRange(producingLikelihood[key])) {
+        return {
+          points: rand(5),
+          type: key
+        };
       }
     }
   }
 
   const work = (gameInfo) => {
-    const producingLikelihood = calculateProducingLikelihood(skills);
     let { timeToFinishDevelopment } = gameInfo;
     interval = setInterval(() => {
       if(timeToFinishDevelopment <= 0) {
         clearInterval(interval);
         return;
       }
-      produceValue(gameInfo, producingLikelihood);
+      produceValue({ skills });
       timeToFinishDevelopment -= 300;
     }, 300);
   }
@@ -102,7 +105,8 @@ export function Player(data) {
     produceBubble,
     promote,
     work,
-    pauseWork
+    pauseWork,
+    onPointProduced
   }
 }
 
