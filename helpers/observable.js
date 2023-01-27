@@ -30,3 +30,5 @@ class Observer {
     this.observable.unsubscribe(this.id);
   }
 }
+
+export { Observable, Observer };

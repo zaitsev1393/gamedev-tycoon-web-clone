@@ -71,7 +71,7 @@ export const popBubble = async ({ value, originNode }) => {
       top: top + (height / 2) - (parseInt(DEFAULT_BUBBLE_STYLING.width) / 2) + "px", 
       left: left + (width / 2) - (parseInt(DEFAULT_BUBBLE_STYLING.width) / 2) + "px",
     };
-    const bubble = createBubble(value, styles);
+    const bubble = createBubble(value.points, styles);
     setTimeout(() => bubble.style.top = top - 40 + 'px', 300);
     setTimeout(() => bubble.style.top = top - 45 + 'px', 400);
     setTimeout(() => bubble.style.top = top - 25 + 'px', 700);
@@ -79,7 +79,7 @@ export const popBubble = async ({ value, originNode }) => {
     setTimeout(() => moveBubble(bubble), BUBBLE_POPPING_TIME + 50);
     setTimeout(() => {
       destroyBubble(bubble);
-      resolve({ technical: value });
+      resolve(value);
     }, BUBBLE_POPPING_TIME + BUBBLE_TRANSITION_TIME + 100);
   });
 }
@@ -95,9 +95,15 @@ const moveBubble = (bubble, coords = BUBBLES_ACCUMULATOR) => {
 const testPlayerBubbles = (number) => {
   if(number == 0) return;
   const player = document.getElementsByClassName("player")[0] || {};
-  const value = rand(5);
+  const point = rand(5);
   setTimeout(() => {
-    popBubble({ value, originNode: player })
+    popBubble({ 
+      value: {
+        point,
+        type: "technical"
+      }, 
+      originNode: player 
+    })
     testPlayerBubbles(--number);
   }, rand(3000));
 }

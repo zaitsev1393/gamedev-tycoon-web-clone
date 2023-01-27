@@ -4,7 +4,6 @@ import majorTitles from "../data/game-names/major-titles.js";
 import numericalParts from "../data/game-names/numerical-parts.js";
 import { getRandomElement, log, player, rand } from "../helpers/helpers.js";
 import { pauseGame, startGame, DAY, SMALL_GAME_TIME } from "./timer.js";
-import { popBubble } from "../components/bubble/bubble.js";
 import { GAME_TYPE } from "./game-development.js";
 
 const GameState = () => ({

@@ -1,14 +1,30 @@
-const BACKGROUND = {
+import { popBubble } from "../components/bubble/bubble.js";
+import { createPlayerComponent } from "../components/player/player.js";
+import { log, rand } from "../helpers/helpers.js";
+
+export const BACKGROUND = {
   SELF_TAUGHT_CODER: [50, 15, 35, 10]
 }
 
-function Player(data) {
+export function Player(data) {
+  const produceBubble = () => {
+    log("playerInfo: ", playerInfo);
+    popBubble({ 
+      value: {
+        points: rand(5), 
+        type: 'technical'
+      },
+      originNode: playerInfo.node
+    });
+  }
+
   const DEFAULT_SETUP = { 
     background: BACKGROUND.GUY_FROM_TWITTER,
     salary: 300,
     specialization: null,
     perks: [],
-    node: null
+    node: createPlayerComponent({ coords: data.coords, callback: produceBubble }),
+    coords: {}
   }
   
   const interval = null;
@@ -64,24 +80,29 @@ function Player(data) {
       }
     }
   }
-  
+
+  const work = (gameInfo) => {
+    const producingLikelihood = calculateProducingLikelihood(skills);
+    let { timeToFinishDevelopment } = gameInfo;
+    interval = setInterval(() => {
+      if(timeToFinishDevelopment <= 0) {
+        clearInterval(interval);
+        return;
+      }
+      produceValue(gameInfo, producingLikelihood);
+      timeToFinishDevelopment -= 300;
+    }, 300);
+  }
+
+  const promote = ({ newSalary }) => salary = newSalary;
+  const pauseWork = () => clearInterval(interval);  
   return {
     skills,
-    promote: ({ newSalary }) => salary = newSalary,
-    getSalary: () => salary,
-    work: (gameInfo) => {
-      const producingLikelihood = calculateProducingLikelihood(skills);
-      let { timeToFinishDevelopment } = gameInfo;
-      interval = setInterval(() => {
-        if(timeToFinishDevelopment <= 0) {
-          clearInterval(interval);
-          return;
-        }
-        produceValue(gameInfo, producingLikelihood);
-        timeToFinishDevelopment -= 300;
-      }, 300);
-    },
-    pauseWork: () => clearInterval(interval)
+    getSalary,
+    produceBubble,
+    promote,
+    work,
+    pauseWork
   }
 }
 

@@ -1,6 +1,7 @@
-import { isPlayerMenuOpened, closePlayerMenu } from "../helpers/helpers.js";
+import { isPlayerMenuOpened, closePlayerMenu, log } from "../helpers/helpers.js";
 import { createPopup } from "./popup.js";
-import { createPlayer } from "../components/player/player.js";
+import { createPlayerComponent } from "../components/player/player.js";
+import { BACKGROUND, Player } from "../models/player.js";
 
 const PLAYER_COORDS = {
   bottom: '50px',
@@ -8,12 +9,7 @@ const PLAYER_COORDS = {
   transform: 'translateX(-50%)'
 }
 
-const player = createPlayer(PLAYER_COORDS);
-
-frame.addEventListener("click", (event) => {
-  setTimeout(() => {
-    if(isPlayerMenuOpened() && !player.contains(event.target)) {
-      closePlayerMenu();
-    }
-  }, 100);
+const playerModel = new Player({
+  background: BACKGROUND.SELF_TAUGHT_CODER,
+  coords: PLAYER_COORDS
 })
