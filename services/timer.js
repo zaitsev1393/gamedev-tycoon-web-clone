@@ -13,9 +13,16 @@ export const YEAR = MONTH * 12;
 
 export const SMALL_GAME_TIME = 15000;
 
-const { onTick, pauseGame, startGame } = (function() {
+const { 
+  onTick, 
+  pauseGame, 
+  startGame, 
+  onGamePause, 
+  onGameResumed 
+} = (function() {
   const onTick = new Observable();
-
+  const onGamePause = new Observable();
+  const onGameResumed = new Observable();
   let GAME_INTERVAL = null;
 
   (document.getElementById("reset-time") || {}).onclick = () => {
@@ -60,6 +67,7 @@ const { onTick, pauseGame, startGame } = (function() {
   const startGame = (
     time = Number(localStorage.getItem("gameTime"))
   ) => {
+    onGameResumed.next(true);
     log("Game started");
     const gameTime = time += DAY;
     render(timer, gameTime);
@@ -87,12 +95,25 @@ const { onTick, pauseGame, startGame } = (function() {
 
   const pauseGame = () => {
     log("Game paused");
+    onGamePause.next(true);
     clearInterval(GAME_INTERVAL);
   }
 
   startGame();
 
-  return { onTick, pauseGame, startGame }
+  return { 
+    onTick, 
+    pauseGame, 
+    startGame, 
+    onGamePause, 
+    onGameResumed 
+   }
 })();
 
-export { onTick, pauseGame, startGame };
+export {
+  onTick, 
+  pauseGame, 
+  startGame, 
+  onGamePause, 
+  onGameResumed 
+};

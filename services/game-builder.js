@@ -38,54 +38,15 @@ export const startDevelopment = async (gameData) => {
   log("Starting development");
   log("game: ", gameData);
   const progressBar = await createProgressBar(gameData);
-  // startBubbling(gameData);
 
   const gameDevelopment = createDevelopment(gameData);
 
   gameDevelopment.start();
-  document
-    .querySelector("#pause")
-    .addEventListener('click', () => {
-      pauseBubbling(gameData);
-      progressBar.pause();
-    });
-
-  document
-    .querySelector("#continue")
-    .addEventListener('click', () => {
-      startBubbling(gameData);
-      progressBar.continue();
-    });
 
   return {
     pause: () => progressBar.pause(),
     continue: () => progressBar.continue()
   }
-}
-
-const startBubbling = (gameData) => {
-  // const developmentInterval = setInterval(async () => {
-    // if(gameData.timeToFinishDevelopment < 0) {
-    //   clearInterval(developmentInterval);
-    //   log("Development finished")
-    //   return;
-    // }
-    // if(rand(100) > 50) {
-    //   const step = await popBubble({ value: rand(5), originNode: player() });
-    //   for(let key in step) {
-    //     gameData.progress[key] += step[key];
-    //   }
-    // }
-    // gameData.timeToFinishDevelopment -= 1000;
-  // }, 1000);
-  // gameData.developmentInterval = developmentInterval;
-  log("Bubble started, game data: ", gameData);
-}
-
-const pauseBubbling = (gameData) => {
-  clearInterval(gameData.developmentInterval);
-  gameData.developmentInterval = null;
-  log("Bubble paused, game data: ", gameData);
 }
 
 export const closeBuilder = () => {
