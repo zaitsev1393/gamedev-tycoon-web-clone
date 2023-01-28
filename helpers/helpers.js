@@ -17,7 +17,13 @@ export const runAsync = (fn) => setTimeout(fn, 0);
 
 export const frame = () => document.getElementById("frame");
 export const player = () => document.getElementsByClassName("player")[0];
-export const createElement = (elementName) => document.createElement(elementName);
+export const createElement = (tagName, options) => {
+  const element = document.createElement(tagName);
+  if('classes' in options) {
+    options.classes.forEach(className => element.classList.add(className));
+  }
+  return element;
+};
 export const pixelize = (number) => number + "px";
 export const getRandomElement = (arr) => arr[rand(arr.length - 1)];
 export const rand = (multi) => Math.ceil(Math.random() * multi);

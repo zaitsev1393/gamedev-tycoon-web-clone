@@ -1,4 +1,5 @@
 
+import { createPlayerCard } from "./components/player/player.js";
 import { runAsync } from "./helpers/helpers.js";
 import { initDevs } from "./models/player.js";
 import { pauseGame, startGame } from "./services/timer.js";

@@ -70,7 +70,3 @@ export const createDevelopment = (setup) => {
     finish
   }
 }
-
-const startDevelopment = async (gameData) => {
-  
-}
