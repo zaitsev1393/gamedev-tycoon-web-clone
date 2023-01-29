@@ -17,9 +17,10 @@ let devs = [];
 
 const createMainPlayer = () =>
   new Player({
+    name: "Old Fart",
     background: BACKGROUND.SELF_TAUGHT_CODER,
     coords: {
-      top: '200px',
+      bottom: '20px',
       left: '50%'
     }
   })
@@ -61,7 +62,6 @@ export function Player(data) {
   const skills = setSkills(data.background);
 
   const DEFAULT_SETUP = { 
-    name: "John Doe",
     background: BACKGROUND.GUY_FROM_TWITTER,
     salary: 300,
     specialization: null,
@@ -69,7 +69,7 @@ export function Player(data) {
     node: createPlayerComponent({
       coords: data.coords, 
       skills,
-      name: "John Doe",
+      name: data.name,
       callback: produceBubble 
     }),
     coords: {}

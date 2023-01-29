@@ -1,8 +1,7 @@
-
-import { createPlayerCard } from "./components/player/player.js";
-import { runAsync } from "./helpers/helpers.js";
 import { initDevs } from "./models/player.js";
+import { createStatusBar } from "./services/game-development-status.js";
 import { pauseGame, startGame } from "./services/timer.js";
+import { POINT } from "./shared/point-types.js";
 
 function main() {
   initDevs();

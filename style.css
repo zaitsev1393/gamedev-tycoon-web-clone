@@ -2,6 +2,8 @@
 @import "./components/player/player.css";
 @import "./components/game-builder/game-builder.css";
 @import "./components/progress-bar/progress-bar.css";
+@import "./components/score-bubble/score-bubble.css";
+@import "./components/game-development-status/game-development-status.css";
 
 h1,h2,h3,h4,h5,h6 {
   margin: 0;

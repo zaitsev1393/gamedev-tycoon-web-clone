@@ -30,6 +30,7 @@
   padding: 10px;
   padding-bottom: 25px;
   box-shadow: 0 0 5px rgba(0,0,0,.3);
+  transform: translateX(-50%);
 }
 
 .dev-name {
@@ -68,4 +69,10 @@
 .segment {
   width: 5px;
   height: 10px;
+}
+
+.broider {
+  border-image:  url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFQAAABUCAYAAAAcaxDBAAAAAXNSR0IArs4c6QAAARZJREFUeF7t0jENAAAMw7CVP+mR8JkCyGF116jAaK3YBYpPEGigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADnemigWADneigGfcs0AFXZaO7pAAAAAElFTkSuQmCC") 28 /  28px / 0 round;
+  border-width:  28px;
+  border-style:  solid;
 }

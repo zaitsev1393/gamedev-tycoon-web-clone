@@ -1,6 +1,6 @@
 .bubble {
   position: absolute;
-  z-index: 0;
+  z-index: 10;
   border-radius: 50%;
   transition: 0.3s;
   color: white;

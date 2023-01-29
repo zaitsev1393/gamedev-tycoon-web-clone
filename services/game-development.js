@@ -1,3 +1,4 @@
+import { BUBBLE_TRANSITION_FINISHING_TIME } from "../components/bubble/bubble.js";
 import { log } from "../helpers/helpers.js";
 import { onGamePause, onGameResumed } from "./timer.js";
 
@@ -13,7 +14,7 @@ export const GAME_DEVELOPMENT_TIME = {
   BIG_GAME: 30000
 }
 
-export const createDevelopment = (setup) => {
+export const createDevelopment = (setup, statusBar) => {
   let gameDevelopmentInterval = null;
 
   let devSubs = [];
@@ -35,6 +36,21 @@ export const createDevelopment = (setup) => {
   };
   const resume = () => start(setup);
 
+  const processPoint = ({ 
+    points, 
+    type, 
+    finished 
+  }) => {
+    setTimeout(() => statusBar.update({ type, value: points }), BUBBLE_TRANSITION_FINISHING_TIME);
+    if(type && points) {
+      setup.progress[type] += points;
+      log("progress: ", setup);
+    }
+    if(finished) {
+      log("Finished: ", setup);
+    }
+  };
+
   const start = () => {
     gameDevelopmentInterval = setInterval(() => {
       if(setup.timeToFinishDevelopment <= 0) {
@@ -46,15 +62,7 @@ export const createDevelopment = (setup) => {
 
     setup.developers.forEach(developer => {
       developer.work(setup);
-      devSubs.push(developer.onPointProduced.subscribe(({ points, type, finished }) => {
-        if(type && points) {
-          setup.progress[type] += points;
-          log("progress: ", setup);
-        }
-        if(finished) {
-          log("Finished: ", setup);
-        }
-      }));
+      devSubs.push(developer.onPointProduced.subscribe(processPoint));
     })
   }
 

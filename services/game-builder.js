@@ -6,6 +6,7 @@ import { getRandomElement, log, player, rand } from "../helpers/helpers.js";
 import { pauseGame, startGame, DAY, SMALL_GAME_TIME } from "./timer.js";
 import { createDevelopment, GAME_DEVELOPMENT_TIME, GAME_TYPE } from "./game-development.js";
 import { getDevs } from "../models/player.js";
+import { createStatusBar } from "./game-development-status.js";
 
 log("game-builder.js init");
 
@@ -38,14 +39,11 @@ export const startDevelopment = async (gameData) => {
   log("Starting development");
   log("game: ", gameData);
   
-  const progressBar = await createProgressBar(gameData);
-  const gameDevelopment = createDevelopment(gameData);
-  gameDevelopment.start();
+  await createProgressBar(gameData);
+  const statusBar = createStatusBar(gameData);
+  const gameDevelopment = createDevelopment(gameData, statusBar);
 
-  return {
-    pause: () => progressBar.pause(),
-    continue: () => progressBar.continue()
-  }
+  gameDevelopment.start();
 }
 
 export const closeBuilder = () => {

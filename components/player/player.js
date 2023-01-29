@@ -4,7 +4,7 @@ import { openBuilder } from "../../services/game-builder.js";
 
 export const createPlayerCard = ({ name, skills }) => {
   const playerCard = createElement("div", { 
-    classes: ["dev-card", "translate-center", "cursor-pointer"] 
+    classes: ["dev-card", "cursor-pointer"]
   });
   const playerCardHTML = `
     <div class = "dev-name">${ name }</div>
