@@ -17,7 +17,7 @@ let devs = [];
 
 const createMainPlayer = () =>
   new Player({
-    name: "Old Fart",
+    name: "John Snow",
     background: BACKGROUND.SELF_TAUGHT_CODER,
     coords: {
       bottom: '20px',
@@ -40,7 +40,6 @@ export function Player(data) {
   }
 
   const onPointProduced = new Observable();
-  const onFinishedDevelopment = new Observable();
 
   const perks = [];
   const skillset = {

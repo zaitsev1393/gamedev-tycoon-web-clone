@@ -2,8 +2,8 @@ import { createStatusBarComponent } from "../components/game-development-status/
 import { log, updateInnerHTML } from "../helpers/helpers.js";
 import { POINT } from "../shared/point-types.js";
 
-export const createStatusBar = () => {
-  const statusBar = createStatusBarComponent();
+export const createStatusBar = (gameData) => {
+  const statusBar = createStatusBarComponent(gameData);
   const update = ({ type, value }) => {
     const cbs = {
       [POINT.TECHNICAL]: () => statusBar.counters[POINT.TECHNICAL].update(value),

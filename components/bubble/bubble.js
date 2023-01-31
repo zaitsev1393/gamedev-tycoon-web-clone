@@ -1,8 +1,7 @@
 import { 
   setStyle, 
   frame, 
-  pixelize, 
-  rand,
+  pixelize,
   log
 } from "../../helpers/helpers.js";
 import { COLORS } from "../../shared/colors.js";
@@ -72,6 +71,11 @@ const moveBubble = (bubble) => {
       .querySelector(`#${ bubble.dataset['type'] }-value`)
       .getBoundingClientRect();
 
+  const styles = { 
+    top: pixelize(parseInt(top)), 
+    left: pixelize(parseInt(left) - (parseInt(bubble.style.width) / 2)) 
+  }
+
   bubble.classList.remove('popping');
-  setStyle(bubble, { top: pixelize(top), left: pixelize(left - bubble.width / 2) });
+  setStyle(bubble, styles);
 }

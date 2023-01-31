@@ -6,15 +6,49 @@
 import { log } from "../helpers/helpers.js";
 import { Observable } from "../helpers/observable.js";
 
-export const DAY = 2030;
+export const DAY = 500;
 export const WEEK = DAY * 7;
 export const MONTH = WEEK * 4;
 export const YEAR = MONTH * 12;
 
 export const SMALL_GAME_TIME = 15000;
 
+const getCurrentDay = (currentTime) => {
+  return Math.floor(
+    (
+      getThisYearTime(currentTime) - 
+      getCurrentYearMonth(currentTime) * MONTH -
+      getCurrentWeek(currentTime) * WEEK
+    ) / DAY);
+}
+
+const getCurrentWeek = (currentTime) => {
+  const thisYearTime = getThisYearTime(currentTime);
+  const currentMonth = getCurrentYearMonth(currentTime);
+  const restOfThisMonthTime = thisYearTime - currentMonth * MONTH;
+  return Math.floor(restOfThisMonthTime / WEEK);
+}
+
+const getThisYearTime = (currentTime) => {
+  while(currentTime > YEAR) {
+    currentTime -= YEAR;
+  }
+  return currentTime;
+}
+
+const getCurrentYearMonth = (currentTime) => {
+  while(currentTime > YEAR) {
+    currentTime -= YEAR;
+  }
+  return Math.floor(currentTime / MONTH);
+}
+
+const getCurrentYear = (currentTime) => Math.floor(currentTime / YEAR) ;
+
+
 const { 
   onTick, 
+  onNewMonth,
   pauseGame, 
   startGame, 
   onGamePause, 
@@ -23,6 +57,8 @@ const {
   const onTick = new Observable();
   const onGamePause = new Observable();
   const onGameResumed = new Observable();
+  const onNewMonth = new Observable();
+
   let GAME_INTERVAL = null;
 
   (document.getElementById("reset-time") || {}).onclick = () => {
@@ -30,38 +66,6 @@ const {
     localStorage.setItem("gameTime", 0);
     startGame();
   }
-
-  const getCurrentDay = (currentTime) => {
-    return Math.floor(
-      (
-        getThisYearTime(currentTime) - 
-        getCurrentYearMonth(currentTime) * MONTH -
-        getCurrentWeek(currentTime) * WEEK
-      ) / DAY);
-  }
-
-  const getCurrentWeek = (currentTime) => {
-    const thisYearTime = getThisYearTime(currentTime);
-    const currentMonth = getCurrentYearMonth(currentTime);
-    const restOfThisMonthTime = thisYearTime - currentMonth * MONTH;
-    return Math.floor(restOfThisMonthTime / WEEK);
-  }
-
-  const getThisYearTime = (currentTime) => {
-    while(currentTime > YEAR) {
-      currentTime -= YEAR;
-    }
-    return currentTime;
-  }
-
-  const getCurrentYearMonth = (currentTime) => {
-    while(currentTime > YEAR) {
-      currentTime -= YEAR;
-    }
-    return Math.floor(currentTime / MONTH);
-  }
-
-  const getCurrentYear = (currentTime) => Math.floor(currentTime / YEAR) ;
 
   const timer = document.getElementById("timer");
   const startGame = (
@@ -90,6 +94,9 @@ const {
       getCurrentYearMonth(time),
       getCurrentYear(time)
     ];
+    if(day == 0 && week == 0) {
+      onNewMonth.next(true);
+    }
     return `D: ${ day } - W: ${ week } - M: ${ month } - Y: ${ 1985 + year }`;
   }
 
@@ -105,6 +112,7 @@ const {
     onTick, 
     pauseGame, 
     startGame, 
+    onNewMonth,
     onGamePause, 
     onGameResumed 
    }
@@ -114,6 +122,7 @@ export {
   onTick, 
   pauseGame, 
   startGame, 
+  onNewMonth,
   onGamePause, 
   onGameResumed 
 };

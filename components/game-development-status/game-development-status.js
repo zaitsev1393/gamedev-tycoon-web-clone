@@ -2,7 +2,7 @@ import { createElement, frame, log } from "../../helpers/helpers.js";
 import { POINT } from "../../shared/point-types.js";
 import { createScore } from "../score-bubble/score-bubble.js"
 
-export const createStatusBarComponent = (status, info = { name: "Game Name 1" }) => {
+export const createStatusBarComponent = (gameData) => {
   const _frame = frame();
   const statusBar = createElement("div", { classes: ["status-bar"] });
   
@@ -11,7 +11,7 @@ export const createStatusBarComponent = (status, info = { name: "Game Name 1" })
   const techBubble = createScore({ id: POINT.TECHNICAL }).node;
   const designBubble = createScore({ id: POINT.DESIGN }).node;
   const bugBubble = createScore({ id: POINT.BUG }).node;
-  const nameContainer = createElement("div", { classes: ["name"], html: "Game name" });
+  const nameContainer = createElement("div", { classes: ["name"], html: gameData.name });
   const bubblesContainer = createElement("div", { classes: ["bubbles-container"] });
 
   bubblesContainer.appendChild(bugBubble);
