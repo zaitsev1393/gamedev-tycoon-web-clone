@@ -1,3 +1,7 @@
+export const curry = (fn) => x => y => fn(x, y);
+export const append = (anchor, element) => anchor.appendChild(element);
+export const appendTo = curry(append);
+
 export const isPlayerMenuOpened = () => !!document.getElementById("popupContainer");
 export const closePlayerMenu = () => document.body.removeChild(document.getElementById("popupContainer"));
 export const log = (...args) => console.log("--", ...args);
@@ -11,6 +15,11 @@ export const runAsync = (fn) => queueMicrotask(fn);
 export const frame = () => document.getElementById("frame");
 export const summary = () => document.getElementById("summary");
 export const player = () => document.getElementsByClassName("player")[0];
+export const updateInnerHTML = (node, html) => node.innerHTML = html;
+export const pixelize = (number) => number + "px";
+export const getRandomElement = (arr) => arr[rand(arr.length - 1)];
+export const rand = (multi) => Math.ceil(Math.random() * multi);
+
 export const createElement = (tagName, options = {}) => {
   const element = document.createElement(tagName);
   if('classes' in options) element.classList.add(...options.classes);
@@ -19,10 +28,9 @@ export const createElement = (tagName, options = {}) => {
   if('id' in options) element.id = options.id;
   return element;
 };
-export const updateInnerHTML = (node, html) => node.innerHTML = html;
-export const pixelize = (number) => number + "px";
-export const getRandomElement = (arr) => arr[rand(arr.length - 1)];
-export const rand = (multi) => Math.ceil(Math.random() * multi);
+
+export const getElement = (query) => document.querySelector(query);
+
 
 if(!Number.prototype.inRange) {
   Number.prototype.inRange = function(range) {

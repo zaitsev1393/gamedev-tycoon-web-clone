@@ -4,7 +4,8 @@ const getCurrentModal = () => document.querySelector("#app-modal");
 
 export const createModal = (node) => {
   return new Promise((resolve, reject) => {
-    if(getCurrentModal()) return reject;
+    if(getCurrentModal()) return reject();
+
     let modal = createElement("div", { id: "app-modal"});
     modal.appendChild(node);
     modal.classList.add("modal-container");

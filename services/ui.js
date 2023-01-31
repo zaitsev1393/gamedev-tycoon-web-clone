@@ -1,6 +1,7 @@
-import { createElement, frame, log, summary } from "../helpers/helpers.js";
+import { appendTo, createElement, getElement, summary } from "../helpers/helpers.js";
 import { getGameState, onBudgetChanged } from "./game.js";
-
+const appendToSummary = (...elems) => elems.forEach(appendTo(summary()))
+;
 export const initUIService = () => {
   const summaryRows = [
     {
@@ -32,8 +33,7 @@ const setGameInfo = () => {
   const nameElement = createElement("div", {
     html: getGameState().companyName
   })
-  summary().appendChild(nameElement);
-  summary().appendChild(createElement("hr"))
+  appendToSummary(nameElement, createElement("hr"));
 }
 
 const createSummaryRow = ({ label, value, updater }) => {
@@ -41,15 +41,16 @@ const createSummaryRow = ({ label, value, updater }) => {
   const row = createElement("div", {
     html: `<span>${ label }: </span>`,
     classes: ["flex", "justify-between"]
-  })
+  });
   const counter = createElement("span", { id, html: value })
-  row.appendChild(counter);
-  updater.subscribe((value) => document.querySelector(`#${ id }`).innerHTML = value);
+  appendTo(row)(counter);
+  updater.subscribe((value) => getElement(`#${ id }`).innerHTML = value);
   return row;
 }
 
 const renderRows = (rows) => {
-  rows
-    .map(createSummaryRow)
-    .forEach((elem) => summary().appendChild(elem));
+  appendToSummary(
+    ...rows.map(createSummaryRow), 
+    createElement("hr")
+  );
 }
