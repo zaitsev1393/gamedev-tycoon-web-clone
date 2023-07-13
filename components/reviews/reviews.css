@@ -1,0 +1,79 @@
+#game-reviews {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  height: max-content;
+}
+
+.reviews-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.verdict-container {
+  margin-top: 10px;
+  margin-left: auto;
+  font-size: 18px;
+}
+
+.review-bar-container {
+  width: 100px;
+  position: relative;
+  transition: 0.5s;
+  opacity: 0;
+  bottom: -30px;
+}
+
+.magazine-container {
+  min-height: 40px;
+  color: black;
+  font-weight: bold;
+  font-style: italic;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  flex-direction: column;
+}
+
+.magazine-review {
+  height: 30px;
+  text-align: center;
+  margin-top: 5px;
+  font-style: italic;
+  font-size: 10px;
+  font-weight: normal;
+}
+
+.review-bar {
+  display: grid;
+  grid-template-columns: minmax(50px, 100px);
+  grid-template-rows: repeat(10, 20px);
+}
+
+.review-bar-container.shown {
+  opacity: 1;
+  bottom: 0;
+}
+
+.review-bar > div {
+  border: 1px solid black;
+}
+
+.review-bar > div.active {
+  border: 1px solid black;
+  background: green;
+}
+
+.italic: {
+  font-style: italic;
+}

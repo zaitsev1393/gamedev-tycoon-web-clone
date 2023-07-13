@@ -4,6 +4,7 @@
 @import "./components/progress-bar/progress-bar.css";
 @import "./components/score-bubble/score-bubble.css";
 @import "./components/start-menu/start-menu.css";
+@import "./components/reviews/reviews.css";
 @import "./components/game-development-status/game-development-status.css";
 
 @import "./theme/modal.css";
